@@ -19,8 +19,16 @@ jobs:
         with:
           cuda: '12.4.0' # Uses the explicit 3-part version string to pass validation
           method: 'network'
-          # Clean text list format to ensure it bypasses any Node module parser quirks
-          sub-packages: 'nvcc, cudart, cublas, cublas_dev, thrust, visual_studio_integration'
+          # This exact multi-line pipe formatting ensures Windows handles the JSON quotes correctly
+          sub-packages: |
+            [
+              "nvcc",
+              "cudart",
+              "cublas",
+              "cublas_dev",
+              "thrust",
+              "visual_studio_integration"
+            ]
 
       - name: Configure CMake with CUDA
         run: |
