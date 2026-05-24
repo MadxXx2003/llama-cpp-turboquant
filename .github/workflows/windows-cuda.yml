@@ -37,22 +37,22 @@ jobs:
             -A x64 `
             -DGGML_CUDA=ON `
             -DCMAKE_CUDA_ARCHITECTURES="75" `
-            -DBUILD_SHARED_LIBS=OFF `
-            -DLAMA_STATIC=ON `
+            -DBUILD_SHARED_LIBS=ON `
             -DLLAMA_OPENSSL=OFF `
+            -DLLAMA_BUILD_TESTS=OFF `
+            -DLLAMA_BUILD_EXAMPLES=OFF `
             -DCMAKE_BUILD_TYPE=Release
 
       - name: Compile Executables
         run: |
-          # Explicitly target ONLY the main executables instead of building everything
           cmake --build build --config Release --target llama-cli --parallel 4
           cmake --build build --config Release --target llama-server --parallel 4
 
-      - name: Upload Finished Binaries Only
+      - name: Upload Finished Binaries
         uses: actions/upload-artifact@v4
         with:
-          name: llama-turboquant-turing-cuda
-          # STRICT PATHING: Tells Github to ONLY pull these two specific files
+          name: llama-turboquant-turing-modular
+          # Captures the tiny launcher exes and the required modular backend dll libraries
           path: |
-            build/bin/Release/llama-cli.exe
-            build/bin/Release/llama-server.exe
+            build/bin/Release/*.exe
+            build/bin/Release/*.dll
