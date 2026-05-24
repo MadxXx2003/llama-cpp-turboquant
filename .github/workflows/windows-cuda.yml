@@ -15,10 +15,12 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Install CUDA Toolkit
-        uses: Jimver/cuda-toolkit@v0.2.2
+        uses: Jimver/cuda-toolkit@v0.2.35
         with:
-          cuda: '12.4.1' # Adjust to match your local NVIDIA driver requirements
+          cuda: '12.4' # Changed from 12.4.1 to let the action pick the best 12.4.x installer
           method: 'network'
+          # Only download the core elements llama.cpp needs to save pipeline time
+          sub-packages: '["nvcc", "cudart", "cublas", "cublas_dev", "thrust", "visual_studio_integration"]'
 
       - name: Configure CMake with CUDA
         run: |
